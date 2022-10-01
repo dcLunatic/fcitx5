@@ -1338,6 +1338,11 @@ bool Instance::isRestartRequested() const {
     return d->restart_;
 }
 
+bool Instance::flypyHideMode() const{
+    FCITX_D();
+    return d->globalConfig_.flypyHideInputPannel();
+}
+
 InstancePrivate *Instance::privateData() {
     FCITX_D();
     return d;
@@ -1968,6 +1973,7 @@ bool Instance::trigger(InputContext *ic, bool totallyReleased) {
     }
     return true;
 }
+
 
 bool Instance::altTrigger(InputContext *ic) {
     if (!canAltTrigger(ic)) {

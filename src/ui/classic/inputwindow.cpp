@@ -281,6 +281,11 @@ std::pair<int, int> InputWindow::update(InputContext *inputContext) {
         cursor_ = preedit.cursor() + auxUp.toString().size();
     }
 
+    if(instance->flypyHideMode() && preedit.textLength() && preedit.toString().find("`") == std::string::npos){
+        visible_ = false;
+        return {0, 0};
+    }
+
     auto auxDown = instance->outputFilter(inputContext, inputPanel.auxDown());
     setTextToLayout(inputContext, lowerLayout_.get(), nullptr, nullptr,
                     {auxDown});

@@ -180,10 +180,20 @@ FCITX_CONFIGURATION(
         this, "PreloadInputMethod",
         "Preload input method to be used by default", true};);
 
+
+FCITX_CONFIGURATION(
+    CustomConfig,
+    Option<bool> flypyHideInputPannel{
+        this, "flypyHideInputPannel",
+        _("auto hide the input pannel flypyly(by '`')"), true};
+);
+
 FCITX_CONFIGURATION(GlobalConfig,
                     Option<HotkeyConfig> hotkey{this, "Hotkey", _("Hotkey")};
                     Option<BehaviorConfig> behavior{this, "Behavior",
-                                                    _("Behavior")};);
+                                                    _("Behavior")};
+                    Option<CustomConfig> customconfig{this, "CustomConfig", _("CustomConfig")};
+                                                    );
 } // namespace impl
 
 class GlobalConfigPrivate : public impl::GlobalConfig {};
@@ -210,6 +220,11 @@ bool GlobalConfig::safeSave(const std::string &path) const {
 const KeyList &GlobalConfig::triggerKeys() const {
     FCITX_D();
     return *d->hotkey->triggerKeys;
+}
+
+bool GlobalConfig::flypyHideInputPannel() const {
+    FCITX_D();
+    return *d->customconfig->flypyHideInputPannel;
 }
 
 bool GlobalConfig::enumerateWithTriggerKeys() const {

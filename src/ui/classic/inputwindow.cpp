@@ -17,6 +17,12 @@
 #include "fcitx/misc_p.h"
 #include "classicui.h"
 
+
+
+#include <fstream>
+#include <iostream>
+#include <execinfo.h>
+
 namespace fcitx::classicui {
 
 auto newPangoLayout(PangoContext *context) {
@@ -279,6 +285,12 @@ std::pair<int, int> InputWindow::update(InputContext *inputContext) {
     if (preedit.cursor() >= 0 &&
         static_cast<size_t>(preedit.cursor()) <= preedit.textLength()) {
         cursor_ = preedit.cursor() + auxUp.toString().size();
+    }
+
+    if(instance->flypyHideMode() && preedit.textLength() && preedit.toString().find("`") == std::string::npos){
+        visible_ = false;
+        outfile.close();
+        return {0, 0};
     }
 
     auto auxDown = instance->outputFilter(inputContext, inputPanel.auxDown());

@@ -473,6 +473,9 @@ public:
      */
     bool isRestartRequested() const;
 
+
+    bool flypyHideMode() const;
+
 protected:
     // For testing purpose
     InstancePrivate *privateData();

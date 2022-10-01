@@ -3,11 +3,11 @@ requiredVersion=5.0.19
 
 coreFile=libFcitx5Core.so.$requiredVersion
 classicuiFile=libclassicui.so
-提交相应编译好的库文件以及快速安装脚本
-# if [ `whoami` != "root" ]; then
-#     echo "请以root身份执行"
-#     exit 1
-# fi
+
+if [ `whoami` != "root" ]; then
+    echo "请以root身份执行"
+    exit 1
+fi
 
 if ! type $targetProgram >/dev/null 2>&1; then
     echo "未安装$targetProgram"

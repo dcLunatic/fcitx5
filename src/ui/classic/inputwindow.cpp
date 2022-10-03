@@ -288,7 +288,6 @@ std::pair<int, int> InputWindow::update(InputContext *inputContext) {
             preedit.toString().find("ob") != 0 &&
             preedit.toString().find("of") != 0 &&
            (preedit.toString().find("ot") != 0 || preedit.textLength() <= 2)) {
-
         visible_ = false;
         return {0, 0};
     }

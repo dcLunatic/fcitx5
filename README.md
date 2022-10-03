@@ -1,4 +1,5 @@
 # fcitx5自动隐藏输入框
+> 更合适的修改应该放到fcitx5-rime里，移步至[相关内容](https://github.com/dcLunatic/fcitx5-rime)
 
 ## 介绍
 
@@ -14,6 +15,9 @@
 - gcc: 12.1.0
 - other...
 
+## 效果
+![](assets/1.gif)
+
 ## 快速开始
 > 要求对应的fcitx5版本为5.0.19，其他版本可能出现在前后不兼容问题（不过可以试试看）
 ```sh
@@ -21,51 +25,6 @@ git clone https://github.com/dcLunatic/fcitx5.git
 cd fcitx5/quickStart
 sudo sh quickInstall.sh
 ```
-
-## 改动
-由于只是一个小功能，所以要魔改的内容并不多。核心改动如下：
-```c++
-// inputwindow.cpp
-std::pair<int, int> InputWindow::update(InputContext *inputContext) {
-    // ***
-    if(instance->flypyHideMode() && preedit.textLength() && preedit.toString().find("`") == std::string::npos){
-        visible_ = false;
-        outfile.close();
-        return {0, 0};
-    }
-    // ****
-}
-```
-
-后续简单的将配置给完善到configtool那边去，可以按需开启及关闭。核心改动如下：
-```c++
-// globalconfig.cpp
-FCITX_CONFIGURATION(
-    CustomConfig,
-    Option<bool> flypyHideInputPannel{
-        this, "flypyHideInputPannel",
-        _("auto hide the input pannel flypyly(by '`')"), true};
-);
-
-FCITX_CONFIGURATION(GlobalConfig,
-                    Option<HotkeyConfig> hotkey{this, "Hotkey", _("Hotkey")};
-                    Option<BehaviorConfig> behavior{this, "Behavior",
-                                                    _("Behavior")};
-                    Option<CustomConfig> customconfig{this, "CustomConfig", _("CustomConfig")};
-                                                    );
-} // namespace impl
-
-```
-> 在`inputwindow.cpp`这里去改，主要是编译后的相关产物只有`libclassicui.so`，其他的基本不变，直接替换原有的库文件即可完成对应的功能。
-> `globalconfig.cpp`里边的配置如果有需要做成快捷键切换的也行，编译后产物也只有`libFcitx5Core.so.5.0.19`，也可以直接替换使用。
-
-
-### 相关文件
-- **M**       src/lib/fcitx/globalconfig.cpp
-- **M**       src/lib/fcitx/globalconfig.h
-- **M**       src/lib/fcitx/instance.cpp
-- **M**       src/lib/fcitx/instance.h
-- **M**       src/ui/classic/inputwindow.cpp
 
 ## 其他
 - 如果是其他的fcitx5版本，类似的改源码然后编译即可。
